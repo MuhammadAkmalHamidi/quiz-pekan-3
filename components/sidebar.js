@@ -10,7 +10,7 @@ import { IoMdArchive } from "react-icons/io";
 export default function Sidebar() {
   return (
     <Box
-      w={"45vh"}
+      w={"35vh"}
       h={"100vh"}
       bg={"gray.200"}
       alignItems={"center"}

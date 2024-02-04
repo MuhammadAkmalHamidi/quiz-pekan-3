@@ -1,26 +1,14 @@
 import AddNotesButton from "@/components/addNotesButton";
-import MenuButton from "@/components/menuButton";
+import { MenuButtonComponent } from "@/components/menuButton";
 import Layout from "@/layout";
 import { Box, Flex } from "@chakra-ui/react";
-import  Axios  from "axios";
+import Axios from "axios";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 
-export default function Home() {
-  const [data,setData] = useState([])
-  console.log(data);
-  const getNotes = async () => {
-    try {
-      const response = await Axios.get("/api/getNotes")
-      // setData(response.data.data)
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  useEffect(() => {
-    getNotes()
-  },[])
+export default function Home(props) {
+  const [noteId, setNoteId] = useState(0);
+  const data = props?.data.data;
   return (
     <>
       <Layout
@@ -35,7 +23,7 @@ export default function Home() {
             <Flex fontSize={"30px"} fontWeight={"bold"}>
               Sticky Wall
             </Flex>
-            <Flex mt={"25px"} flexWrap={"wrap"} gap={"25px"} w={"100%"}>
+            <Flex py={"25px"} flexWrap={"wrap"} gap={"25px"} w={"100%"}>
               {data?.map((item, index) => {
                 return (
                   <Box
@@ -49,10 +37,15 @@ export default function Home() {
                     h={"300px"}
                     px={"20px"}
                     py={"15px"}
-                    bg={"green.100"}
+                    bg={"purple.100"}
                     w={"30%"}
                   >
-                    <MenuButton />
+                    <Flex
+                      justifyContent={"end"}
+                      onClick={() => setNoteId(item.id)}
+                    >
+                      <MenuButtonComponent noteId={noteId} />
+                    </Flex>
                     <Flex
                       mb={"15px"}
                       textColor={"gray.700"}
@@ -62,7 +55,7 @@ export default function Home() {
                       {item.title}
                     </Flex>
                     <Flex pl={"10px"} textColor={"gray.600"}>
-                      {/* {item.description.substring(0, 300) + "..."} */}
+                      {item.description.substring(0, 250) + "..."}
                     </Flex>
                   </Box>
                 );
@@ -76,8 +69,8 @@ export default function Home() {
   );
 }
 
-// export async function getStaticProps() {
-//   const res = await fetch("https://paace-f178cafcae7b.nevacloud.io/api/notes");
-//   const data = await res.json();
-//   return { props: { data } };
-// }
+export async function getStaticProps() {
+  const res = await fetch("https://paace-f178cafcae7b.nevacloud.io/api/notes");
+  const data = await res.json();
+  return { props: { data } };
+}

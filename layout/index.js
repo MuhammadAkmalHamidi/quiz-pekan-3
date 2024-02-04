@@ -12,8 +12,10 @@ export default function Layout({ children, MetaDesc, metaKeyword, metaTitle }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Flex>
-        <Sidebar />
-        {children}
+        <Flex position={"fixed"}>
+          <Sidebar />
+        </Flex>
+        <Flex pl={"35vh"}>{children}</Flex>
       </Flex>
     </div>
   );
